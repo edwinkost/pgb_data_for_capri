@@ -119,25 +119,104 @@ class MakingNetCDF():
 if __name__ == "__main__":
     
     # clone, landmask and cell area files
-    landmask05minFile    = "/projects/0/dfguu/data/hydroworld/PCRGLOBWB20/input5min/routing/lddsound_05min.map"
+    landmask05minFile    = "/depfg/sutan101/data/pcrglobwb_input_aqueduct/version_2021-09-16/lddsound_05min_version_20210330.map"
     #~ landmask05minFile = "/projects/0/dfguu/data/hydroworld/others/RhineMeuse/RhineMeuse05min.landmask.map"
     cloneMapFileName     = landmask05minFile 
     cellSizeInArcMinutes = 5.0 
-    cellArea05minFile    = "/projects/0/dfguu/data/hydroworld/PCRGLOBWB20/input5min/routing/cellsize05min.correct.map"
+    cellArea05minFile    = "/depfg/sutan101/data/pcrglobwb_input_aqueduct/version_2021-09-16/"
     # set clone
     pcr.setclone(landmask05minFile)
     
+    # irrigation efficiency file
+    irrigation_eff_file  = "/depfg/sutan101/data/pcrglobwb_input_aqueduct/version_2021-09-16/efficiency.nc"
+    
     # output directory
-    outputDirectory = "/scratch-shared/edwinhs/country_water_use_and_demand_for_pcrglobwb2.0_paper/"
+    outputDirectory = "/scratch/depfg/sutan101/pgb_output_for_capri_iso3_country/test/"
     
     # start year and end year
-    staYear = 1958
-    endYear = 2015
+    staYear = 1981
+    endYear = 2019
 
     # input files
     #
-    # - output directory of PCR-GLOBWB 2:
-    inputDirectory  = "/scratch-shared/edwin/05min_runs_for_land_subsidence_deltares_march_april_2017/4LCs_accutraveltime_cru-forcing/non-natural/merged_1958_to_2015/global/netcdf/"
+    # - output directory of PCR-GLOBWB run:
+    pgb_output_dir  = "/depfg/sutan101/pcrglobwb_wri_aqueduct_2021/pcrglobwb_aqueduct_2021_monthly_annual_files/version_2021-09-16_merged/gswp3-w5e5/historical-reference/"
+    #
+    inputFiles = {}
+
+sutan101@gpu014.cluster:/depfg/sutan101/pcrglobwb_wri_aqueduct_2021/pcrglobwb_aqueduct_2021_monthly_annual_files/version_2021-09-16_merged/gswp3-w5e5/historical-reference$ ls *yearly*
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_actualET_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_baseflow_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_discharge_global_yearly-average_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_domesticWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_evaporation_from_irrigation_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_gwRecharge_global_yearly-average_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrGrossDemand_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrNonPaddyWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrPaddyWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_netLqWaterToSoil_at_irrigation_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_nonFossilGroundwaterAbstraction_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_nonIrrGrossDemand_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_nonIrrReturnFlow_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_nonIrrWaterConsumption_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_precipitation_at_irrigation_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_precipitation_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_runoff_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_surfaceWaterAbstraction_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_temperature_global_yearly-average_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalAbstraction_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalEvaporation_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalGrossDemand_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalGroundwaterAbstraction_global_yearly-total_1960_2019_basetier1.nc
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_transpiration_from_irrigation_global_yearly-total_1960_2019_basetier1.nc
+
+
+
+- Variables:
+  - Water availability:
+Runoff: Surface water availability.
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalRunoff_global_yearly-total_1960_2019_basetier1.nc
+
+
+Groundwater recharge: Renewable groundwater availability
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_gwRecharge_global_yearly-total_1960_2019_basetier1.nc
+
+
+Groundwater depletion (fossil groundwater abstraction): Non-renewable groundwater supply
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_fossilGroundwaterAbstraction_global_yearly-total_1960_2019_basetier1.nc
+
+Desalinated water supply 
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_desalinationAbstraction_global_yearly-total_1960_2019_basetier1.nc
+
+  - Water use:
+Water withdrawal per sector
+
+Domestic
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_domesticWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
+
+Industry
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_industryWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
+
+Livestock
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_livestockWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
+
+Irrigation
+pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrigationWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
+
+
+Irrigation water efficiency.
+
+totalRunoff
+
+gwRecharge
+fossilGroundwaterAbstraction
+desalinationAbstraction
+
+domesticWaterWithdrawal
+industryWaterWithdrawal
+irrigationWaterWithdrawal
+
+
     # - water demand directory (domestic, industrial, livestock; no aggricultural)
     waterDemandDirectory = "/scratch-shared/edwinhs/05min_runs_for_gmd_paper_30_oct_2017/05min_runs_4LCs_accutraveltime_cru-forcing_1958-2015/non-natural_starting_from_1958/analysis/water_demand/annual_average_m_per_day/" 
     #
