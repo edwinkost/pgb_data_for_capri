@@ -158,6 +158,16 @@ if __name__ == "__main__":
     inputFiles['livestockWaterWithdrawal']     = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_livestockWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
     inputFiles['irrigationWaterWithdrawal']    = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrigationWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
 
+    # output that will be calculated 
+    output = {}
+    variable_names  = inputFiles.keys()
+    #~ variable_names += ['irrigation_water_consumption']
+    for var in variable_names:
+        output[var] = {}
+        output[var]['file_name'] = outputDirectory + "/" + str(var) + "_annual_country.nc"
+        output[var]['unit']      = "km3.year-1"
+        output[var]['pcr_value'] = None
+
     # making output and temporary directories
     if os.path.exists(outputDirectory):
         shutil.rmtree(outputDirectory)
