@@ -170,6 +170,7 @@ if __name__ == "__main__":
     variable_names  = inputFiles.keys()
     for var in variable_names:
         output[var] = {}
+        # ~ output[var]['file_name'] = outputDirectory + "/" + output_file_code + "_" + str(var) + "_annual_country.nc"
         output[var]['file_name'] = outputDirectory + "/" + output_file_code + "_" + str(var) + "_annual_country.nc"
         output[var]['unit']      = "km3.year-1"
         output[var]['pcr_value'] = None
@@ -259,13 +260,15 @@ if __name__ == "__main__":
             
             print(inputFiles[var])   
 
-            if var == "irrigationEfficiency" and iYear == staYear:
+            if var == "irrigationEfficiency":
             
-                irrigationEfficiency = vos.readPCRmapClone(inputFiles[var],
-                                                           cloneMapFileName, tmp_directory)
+                if iYear == staYear:
+                
+                    irrigationEfficiency = vos.readPCRmapClone(inputFiles[var],
+                                                               cloneMapFileName, tmp_directory)
 
-                irrigationEfficiency = pcr.cover(irrigationEfficiency, 1.0)
-                irrigationEfficiency = pcr.max(0.1, irrigationEfficiency)
+                    irrigationEfficiency = pcr.cover(irrigationEfficiency, 1.0)
+                    irrigationEfficiency = pcr.max(0.1, irrigationEfficiency)
 
                 output[var]['pcr_value'] = irrigationEfficiency
 
@@ -288,14 +291,21 @@ if __name__ == "__main__":
             
             print(var)
             
-            # covering the map with zero
-            pcrValue = pcr.cover(output[var]['pcr_value'], 0.0)
-            
-            # convert values from m to m3
-            pcrValue =  pcrValue * cellArea
+            if var == "irrigationEfficiency":
 
-            # upscaling to the class (country) units and converting the units to km3/year
-            pcrValue = pcr.areatotal(pcrValue, uniqueIDs) / (1000. * 1000. * 1000.)
+                # upscaling to the class (country) units and converting the units to km3/year
+                pcrValue = pcr.areaaverage(pcrValue, uniqueIDs)
+
+            if var != "irrigationEfficiency":
+
+                # covering the map with zero
+                pcrValue = pcr.cover(output[var]['pcr_value'], 0.0)
+                
+                # convert values from m to m3
+                pcrValue =  pcrValue * cellArea
+			    
+                # upscaling to the class (country) units and converting the units to km3/year
+                pcrValue = pcr.areatotal(pcrValue, uniqueIDs) / (1000. * 1000. * 1000.)
             
             # write values to a netcdf file
             ncFileName = output[var]['file_name']
