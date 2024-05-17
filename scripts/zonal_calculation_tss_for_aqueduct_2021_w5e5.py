@@ -293,8 +293,8 @@ if __name__ == "__main__":
             
             if var == "irrigationEfficiency":
 
-                # upscaling to the class (country) units and converting the units to km3/year
-                pcrValue = pcr.areaaverage(pcrValue, uniqueIDs)
+                # upscaling to the class (country) unit - using areaaveraga
+                pcrValue = pcr.areaaverage(output[var]['pcr_value'], uniqueIDs)
 
             if var != "irrigationEfficiency":
 
@@ -304,7 +304,7 @@ if __name__ == "__main__":
                 # convert values from m to m3
                 pcrValue =  pcrValue * cellArea
 			    
-                # upscaling to the class (country) units and converting the units to km3/year
+                # upscaling to the class (country) units and converting the units to km3/year - using areatotal
                 pcrValue = pcr.areatotal(pcrValue, uniqueIDs) / (1000. * 1000. * 1000.)
             
             # write values to a netcdf file
@@ -325,7 +325,7 @@ if __name__ == "__main__":
         txt_file = open(table_directory + "/" + output_file_code + "_summary_" + fulldate + ".txt", "w")
         for var in output.keys():
             header += " " + str(var)
-            header += "_km3"
+            if var != "irrigationEfficiency": header += "_km3"
             cmd    += " " + str(tmp_directory) + "/" + str(var) + ".tmp"
         cmd += " " + str(tmp_directory) + "/" + output_file_code + "_summary_" + fulldate + ".txt.tmp"
         print(cmd)
