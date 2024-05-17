@@ -244,7 +244,7 @@ if __name__ == "__main__":
             
             # netcdf input file name:
             inputFile = inputFiles[var]
-            print inputFile   
+            print(inputFile)   
 
             # reading PCR-GLOBWB values
             output[var]['pcr_value'] = vos.netcdf2PCRobjClone(ncFile = inputFile,\
