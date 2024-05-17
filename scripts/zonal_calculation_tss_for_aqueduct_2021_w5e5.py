@@ -290,7 +290,7 @@ if __name__ == "__main__":
             header += "_km3"
             cmd    += " " + str(tmp_directory) + "/" + str(var) + ".tmp"
         cmd += " " + str(tmp_directory) + "/" + "summary_" + fulldate + ".txt.tmp"
-        print cmd
+        print(cmd)
         os.system(cmd)
         # - add header to txt file
         header += "\n" 
@@ -304,6 +304,7 @@ if __name__ == "__main__":
         
         # remove all temporary files
         cmd = 'rm -r '+ tmp_directory + "/*"
+        print(cmd)
         os.system(cmd)
         
 
