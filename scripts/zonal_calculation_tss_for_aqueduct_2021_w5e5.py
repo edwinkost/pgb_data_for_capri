@@ -143,84 +143,6 @@ if __name__ == "__main__":
     pgb_output_dir  = "/depfg/sutan101/pcrglobwb_wri_aqueduct_2021/pcrglobwb_aqueduct_2021_monthly_annual_files/version_2021-09-16_merged/gswp3-w5e5/historical-reference/"
     #
     inputFiles = {}
-
-sutan101@gpu014.cluster:/depfg/sutan101/pcrglobwb_wri_aqueduct_2021/pcrglobwb_aqueduct_2021_monthly_annual_files/version_2021-09-16_merged/gswp3-w5e5/historical-reference$ ls *yearly*
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_actualET_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_baseflow_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_discharge_global_yearly-average_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_domesticWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_evaporation_from_irrigation_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_gwRecharge_global_yearly-average_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrGrossDemand_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrNonPaddyWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrPaddyWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_netLqWaterToSoil_at_irrigation_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_nonFossilGroundwaterAbstraction_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_nonIrrGrossDemand_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_nonIrrReturnFlow_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_nonIrrWaterConsumption_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_precipitation_at_irrigation_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_precipitation_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_runoff_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_surfaceWaterAbstraction_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_temperature_global_yearly-average_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalAbstraction_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalEvaporation_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalGrossDemand_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalGroundwaterAbstraction_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_transpiration_from_irrigation_global_yearly-total_1960_2019_basetier1.nc
-
-
-'totalRunoff'
-'gwRecharge'
-'fossilGroundwaterAbstraction'
-'desalinationAbstraction'
-'domesticWaterWithdrawal'
-'industryWaterWithdrawal'
-'irrigationWaterWithdrawal'
-
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalRunoff_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_gwRecharge_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_fossilGroundwaterAbstraction_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_desalinationAbstraction_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_domesticWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_industryWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_livestockWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
-pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrigationWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc
-
-
-- Variables:
-  - Water availability:
-Runoff: Surface water availability.
-
-
-Groundwater recharge: Renewable groundwater availability
-
-
-Groundwater depletion (fossil groundwater abstraction): Non-renewable groundwater supply
-
-Desalinated water supply 
-
-  - Water use:
-Water withdrawal per sector
-
-Domestic
-
-Industry
-
-Livestock
-
-Irrigation
-
-
-Irrigation water efficiency.
-
-
-
-    # - water demand directory (domestic, industrial, livestock; no aggricultural)
-    waterDemandDirectory = "/scratch-shared/edwinhs/05min_runs_for_gmd_paper_30_oct_2017/05min_runs_4LCs_accutraveltime_cru-forcing_1958-2015/non-natural_starting_from_1958/analysis/water_demand/annual_average_m_per_day/" 
-    #
-    inputFiles = {}
     #
     # - unit of the following is m.year and flux values given are over the entire cell area
     #
@@ -233,50 +155,6 @@ Irrigation water efficiency.
     inputFiles['livestockWaterWithdrawal']     = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_livestockWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
     inputFiles['irrigationWaterWithdrawal']    = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrigationWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
 
-    #
-    inputFiles["domesticGrossDemand"   ]      = waterDemandDirectory + "/" + "domesticGrossDemand.nc"
-    inputFiles["industryGrossDemand"   ]      = waterDemandDirectory + "/" + "industryGrossDemand.nc"
-    inputFiles["livestockGrossDemand"  ]      = waterDemandDirectory + "/" + "livestockGrossDemand.nc"
-    #                                                                        
-    inputFiles["domesticNettoDemand"   ]      = waterDemandDirectory + "/" + "domesticNettoDemand.nc"
-    inputFiles["industryNettoDemand"   ]      = waterDemandDirectory + "/" + "industryNettoDemand.nc"
-    inputFiles["livestockNettoDemand"  ]      = waterDemandDirectory + "/" + "livestockNettoDemand.nc"
-    #
-    #~ inputFiles["domestic_water_withdrawal"     ]    = inputDirectory + "/" + "domesticWaterWithdrawal_annuaTot_output"
-    #~ inputFiles["industry_water_withdrawal"     ]    = inputDirectory + "/" + "industryWaterWithdrawal_annuaTot_output"
-    #~ inputFiles["livestock_water_withdrawal"    ]    = inputDirectory + "/" + "livestockWaterWithdrawal_annuaTot_output"
-    #~ #
-    #~ inputFiles["non_irrigation_consumption"    ]    = inputDirectory + "/" + "nonIrrWaterConsumption_annuaTot_output"
-    #~ #
-    #~ inputFiles["precipitation"                 ]    = inputDirectory + "/" + "precipitation_annuaTot_output"
-    #~ inputFiles["total_runoff"                  ]    = inputDirectory + "/" + "totalRunoff_annuaTot_output"
-    #~ inputFiles["total_evaporation"             ]    = inputDirectory + "/" + "totalEvaporation_annuaTot_output"
-    #~ inputFiles["total_groundwater_recharge"    ]    = inputDirectory + "/" + "gwRecharge_annuaTot_output"
-    #~ #
-    #~ inputFiles["total_abstraction"             ]    = inputDirectory + "/" + "totalAbstraction_annuaTot_output"
-    #~ inputFiles["desalination_abstraction"      ]    = inputDirectory + "/" + "desalinationAbstraction_annuaTot_output"
-    #~ inputFiles["surface_water_abstraction"     ]    = inputDirectory + "/" + "surfaceWaterAbstraction_annuaTot_output"
-    #~ inputFiles["total_groundwater_abstraction" ]    = inputDirectory + "/" + "totalGroundwaterAbstraction_annuaTot_output_1958-12-31_to_2015-12-31.nc"
-    #~ inputFiles["fossil_groundwater_abstraction"]    = inputDirectory + "/" + "fossilGroundwaterAbstraction_annuaTot_output"
-    #
-    #~ # - unit of the following is m.year and flux values given are over the entire cell area (not only irrigated areas)
-    #~ inputFiles["irrigation_water_withdrawal"   ]    = inputDirectory + "/" + "irrigationWaterWithdrawal_annuaTot_output"
-    #~ inputFiles["evaporation_from_irrigation"   ]    = inputDirectory + "/" + "evaporation_from_irrigation_annuaTot_output"
-    #~ inputFiles["precipitation_at_irrigation"   ]    = inputDirectory + "/" + "precipitation_at_irrigation_annuaTot_output"
-
-    # TODO: add info about area equipped with irrigation 
-    # TODO: add info about return flow fraction for domestic, industry and livestock  
-
-    # output that will be calculated 
-    output = {}
-    variable_names  = inputFiles.keys()
-    #~ variable_names += ['irrigation_water_consumption']
-    for var in variable_names:
-        output[var] = {}
-        output[var]['file_name'] = outputDirectory + "/" + str(var) + "_annual_country.nc"
-        output[var]['unit']      = "km3.year-1"
-        output[var]['pcr_value'] = None
-        
     # making output and temporary directories
     if os.path.exists(outputDirectory):
         shutil.rmtree(outputDirectory)
