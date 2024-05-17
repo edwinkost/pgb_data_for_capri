@@ -204,7 +204,6 @@ if __name__ == "__main__":
     uniqueIDs = pcr.nominal(\
                 vos.readPCRmapClone(uniqueIDsFile, cloneMapFileName, tmp_directory, 
                                     None, False, None, True))
-    uniqueIDs = pcr.readmap(uniqueIDsFile)
     uniqueIDs = pcr.ifthen(pcr.scalar(uniqueIDs) >= 0.0, uniqueIDs)
     
     # landmask                               
