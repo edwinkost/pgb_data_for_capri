@@ -237,7 +237,7 @@ if __name__ == "__main__":
         index = index + 1
         timeStamp = datetime.datetime(int(iYear), int(12), int(31), int(0))
         fulldate = '%4i-%02i-%02i'  %(int(iYear), int(12), int(31))
-        print fulldate
+        print(fulldate)
 
         # reading pcraster or netcdf files:
         for var in inputFiles.keys():        
@@ -258,7 +258,7 @@ if __name__ == "__main__":
         # upscaling to the class (country) units and writing to netcdf files and a table
         for var in output.keys():
             
-            print var
+            print(var)
             
             # covering the map with zero
             pcrValue = pcr.cover(output[var]['pcr_value'], 0.0)
