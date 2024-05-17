@@ -239,7 +239,7 @@ if __name__ == "__main__":
         fulldate = '%4i-%02i-%02i'  %(int(iYear), int(12), int(31))
         print fulldate
 
-        # reading pcraster files:
+        # reading pcraster or netcdf files:
         for var in inputFiles.keys():        
             
             # netcdf input file name:
