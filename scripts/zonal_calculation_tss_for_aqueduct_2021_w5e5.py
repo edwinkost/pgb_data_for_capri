@@ -130,7 +130,10 @@ if __name__ == "__main__":
     # irrigation efficiency file
     irrigation_eff_file  = "/depfg/sutan101/data/pcrglobwb_input_aqueduct/version_2021-09-16/general/efficiency.nc"
     
-    # output directory
+    # class (country) ids
+    uniqueIDsFile = "/eejit/home/sutan101/github/edwinkost/pgb_data_for_capri/iso3_countries/row_number_CNTR_RG_01M_2020_4326.shp.tif.map"
+
+    # output directory of this analusis
     outputDirectory = "/scratch/depfg/sutan101/pgb_output_for_capri_iso3_country/test/"
     
     # start year and end year
@@ -188,7 +191,6 @@ if __name__ == "__main__":
         tssNetCDF.createNetCDF(output[var]['file_name'], var, output[var]['unit'])
 
     # class (country) ids
-    uniqueIDsFile = "/projects/0/dfguu/users/edwin/data/country_shp_from_tianyi/World_Polys_High.map"
     uniqueIDs = pcr.nominal(\
                 vos.readPCRmapClone(uniqueIDsFile, cloneMapFileName, tmp_directory, 
                                     None, False, None, True))
@@ -242,22 +244,8 @@ if __name__ == "__main__":
             
             # netcdf input file name:
             inputFile = inputFiles[var]
-            if var!= "total_groundwater_abstraction":
-                inputFile = inputFile + "_" + fulldate + "_to_" + fulldate + ".nc"
-            if var in ["domesticGrossDemand",  \
-                       "industryGrossDemand",  \
-                       "livestockGrossDemand", \
-                       "domesticNettoDemand",  \
-                       "industryNettoDemand",  \
-                       "livestockNettoDemand"]:
-               inputFile = inputFiles[var]
             print inputFile   
 
-            # fixing the year for water demand years (only between 1958 and 2010)
-            fulldate_for_reading_netcdf = fulldate
-            if iYear < 1960: fulldate_for_reading_netcdf = '%4i-%02i-%02i'  %(int(1960), int(12), int(31))
-            if iYear > 2010: fulldate_for_reading_netcdf = '%4i-%02i-%02i'  %(int(2010), int(12), int(31))
-            
             # reading PCR-GLOBWB values
             output[var]['pcr_value'] = vos.netcdf2PCRobjClone(ncFile = inputFile,\
                                                               varName = "Automatic",\
@@ -266,23 +254,6 @@ if __name__ == "__main__":
                                                               cloneMapFileName  = cloneMapFileName,
                                                               LatitudeLongitude = True,
                                                               specificFillValue = None)
-            # - water demand files/values are still in m.day-1 ; we have to convert them to m.year-1
-            if var in ["domesticGrossDemand",  \
-                       "industryGrossDemand",  \
-                       "livestockGrossDemand", \
-                       "domesticNettoDemand",  \
-                       "industryNettoDemand",  \
-                       "livestockNettoDemand"]:
-                number_of_days_in_the_year = 365
-                if calendar.isleap(iYear): number_of_days_in_the_year = 366 
-                output[var]['pcr_value'] = output[var]['pcr_value'] * number_of_days_in_the_year
-                                                              
-
-        #~ # calculating irrigation water consumption
-        #~ output['irrigation_water_consumption']['pcr_value'] = output['evaporation_from_irrigation']['pcr_value'] * \
-                                                              #~ vos.getValDivZero(output['irrigation_water_withdrawal']['pcr_value'], \
-                                                                                #~ output['irrigation_water_withdrawal']['pcr_value'] +\
-                                                                                #~ output['precipitation_at_irrigation']['pcr_value'])
         
         # upscaling to the class (country) units and writing to netcdf files and a table
         for var in output.keys():
@@ -335,3 +306,4 @@ if __name__ == "__main__":
         cmd = 'rm -r '+ tmp_directory + "/*"
         os.system(cmd)
         
+
