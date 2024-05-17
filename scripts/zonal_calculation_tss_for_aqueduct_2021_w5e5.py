@@ -16,7 +16,7 @@ import virtualOS as vos
 
 class MakingNetCDF():
     
-    def __init__(self, cloneMapFile, attribute=None, cellSizeInArcMinutes=None):
+    def __init__(self, cloneMapFile, attribute = None, cellSizeInArcMinutes = None):
         		
         # cloneMap
         # - the cloneMap must be at 5 arc min resolution
@@ -134,11 +134,14 @@ if __name__ == "__main__":
     uniqueIDsFile = "/eejit/home/sutan101/github/edwinkost/pgb_data_for_capri/iso3_countries/row_number_CNTR_RG_01M_2020_4326.shp.tif.map"
 
     # output directory of this analusis
-    outputDirectory = "/scratch/depfg/sutan101/pgb_output_for_capri_iso3_country/test/"
+    outputDirectory = "/scratch/depfg/sutan101/pgb_output_for_capri_iso3_country/test2/"
+    
+    # output file code/pattern
+    output_file_code = "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference"
     
     # start year and end year
-    staYear = 1981
-    endYear = 2019
+    staYear = 2000
+    endYear = 2005
 
     # input files
     #
@@ -159,15 +162,15 @@ if __name__ == "__main__":
     inputFiles['irrigationWaterWithdrawal']    = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrigationWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
 
     # capri also needs irrigation efficiency
+    inputFiles['irrigationEfficiency']         = irrigation_eff_file 
     
     
     # output that will be calculated 
     output = {}
     variable_names  = inputFiles.keys()
-    #~ variable_names += ['irrigation_water_consumption']
     for var in variable_names:
         output[var] = {}
-        output[var]['file_name'] = outputDirectory + "/" + str(var) + "_annual_country.nc"
+        output[var]['file_name'] = outputDirectory + "/" + output_file_code + "_" + str(var) + "_annual_country.nc"
         output[var]['unit']      = "km3.year-1"
         output[var]['pcr_value'] = None
 
@@ -186,9 +189,9 @@ if __name__ == "__main__":
     
     # attribute for netCDF files 
     attributeDictionary = {}
-    attributeDictionary['title'      ]  = "PCR-GLOBWB 2"
+    attributeDictionary['title'      ]  = "PCR-GLOBWB output files"
     attributeDictionary['institution']  = "Dept. of Physical Geography, Utrecht University"
-    attributeDictionary['source'     ]  = "None"
+    attributeDictionary['source'     ]  = pgb_output_dir
     attributeDictionary['history'    ]  = "None"
     attributeDictionary['references' ]  = "None"
     attributeDictionary['comment'    ]  = "None"
@@ -254,19 +257,31 @@ if __name__ == "__main__":
         # reading pcraster or netcdf files:
         for var in inputFiles.keys():        
             
-            # netcdf input file name:
-            inputFile = inputFiles[var]
-            print(inputFile)   
+            print(inputFiles[var])   
 
-            # reading PCR-GLOBWB values
-            fulldate_for_reading_netcdf = fulldate
-            output[var]['pcr_value'] = vos.netcdf2PCRobjClone(ncFile = inputFile,\
-                                                              varName = "automatic",\
-                                                              dateInput = fulldate_for_reading_netcdf,
-                                                              useDoy = None,
-                                                              cloneMapFileName  = cloneMapFileName,
-                                                              LatitudeLongitude = True,
-                                                              specificFillValue = None)
+            if var == "irrigationEfficiency" and iYear == staYear:
+            
+                irrigationEfficiency = vos.readPCRmapClone(inputFiles[var],
+                                                           cloneMapFileName, tmp_directory)
+
+                irrigationEfficiency = pcr.cover(irrigationEfficiency, 1.0)
+                irrigationEfficiency = pcr.max(0.1, irrigationEfficiency)
+
+                output[var]['pcr_value'] = irrigationEfficiency
+
+
+            if var != "irrigationEfficiency":
+
+                # reading PCR-GLOBWB values from netcdf files with time component
+
+                fulldate_for_reading_netcdf = fulldate
+                output[var]['pcr_value'] = vos.netcdf2PCRobjClone(ncFile = inputFiles[var],\
+                                                                  varName = "automatic",\
+                                                                  dateInput = fulldate_for_reading_netcdf,
+                                                                  useDoy = None,
+                                                                  cloneMapFileName  = cloneMapFileName,
+                                                                  LatitudeLongitude = True,
+                                                                  specificFillValue = None)
         
         # upscaling to the class (country) units and writing to netcdf files and a table
         for var in output.keys():
@@ -297,19 +312,19 @@ if __name__ == "__main__":
         # - header for the table
         header = "x y class_id"
         # - txt file that contains the table
-        txt_file = open(table_directory + "/" + "summary_" + fulldate + ".txt", "w")
+        txt_file = open(table_directory + "/" + output_file_code + "_summary_" + fulldate + ".txt", "w")
         for var in output.keys():
             header += " " + str(var)
             header += "_km3"
             cmd    += " " + str(tmp_directory) + "/" + str(var) + ".tmp"
-        cmd += " " + str(tmp_directory) + "/" + "summary_" + fulldate + ".txt.tmp"
+        cmd += " " + str(tmp_directory) + "/" + output_file_code + "_summary_" + fulldate + ".txt.tmp"
         print(cmd)
         os.system(cmd)
         # - add header to txt file
         header += "\n" 
         txt_file.write(header)
         # - add map2col output to the txt_file
-        map2col_file = open(tmp_directory+"/" + "summary_" + fulldate + ".txt.tmp", "r")
+        map2col_file = open(tmp_directory+"/" + output_file_code + "_summary_" + fulldate + ".txt.tmp", "r")
         txt_file.write(map2col_file.read())
         # - close all open txt files
         txt_file.close()
