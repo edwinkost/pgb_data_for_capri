@@ -159,7 +159,8 @@ if __name__ == "__main__":
     # input files
     #
     # - output directory of PCR-GLOBWB run:
-    pgb_output_dir  = "/depfg/sutan101/pcrglobwb_wri_aqueduct_2021/pcrglobwb_aqueduct_2021_monthly_annual_files/version_2021-09-16_merged/gswp3-w5e5/historical-reference/"
+    # ~ pgb_output_dir  = "/depfg/sutan101/pcrglobwb_wri_aqueduct_2021/pcrglobwb_aqueduct_2021_monthly_annual_files/version_2021-09-16_merged/gswp3-w5e5/historical-reference/"
+    pgb_output_dir  = "/depfg/sutan101/pcrglobwb_wri_aqueduct_2021/pcrglobwb_aqueduct_2021_monthly_annual_files/version_2021-09-16_merged/%s/%s/" % (gcmCode, scenarioCode)
     #
     inputFiles = {}
     #
