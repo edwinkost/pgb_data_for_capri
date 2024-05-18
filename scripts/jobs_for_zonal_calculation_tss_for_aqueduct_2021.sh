@@ -1,9 +1,9 @@
 
 #~ gswp3-w5e5 historical-reference
-python zonal_calculation_tss_for_aqueduct_2021.py \
- /scratch/depfg/sutan101/pgb_output_for_capri_iso3_country/gswp3-w5e5/historical-reference/ \
- gswp3-w5e5 historical-reference \
- 1960 2019
+#~ python zonal_calculation_tss_for_aqueduct_2021.py \
+ #~ /scratch/depfg/sutan101/pgb_output_for_capri_iso3_country/gswp3-w5e5/historical-reference/ \
+ #~ gswp3-w5e5 historical-reference \
+ #~ 1960 2019
 
 GCM_CODE="gfdl-esm4"
 SCENARIO_CODE="historical"
