@@ -16,7 +16,7 @@ import virtualOS as vos
 
 class MakingNetCDF():
     
-    def __init__(self, cloneMapFile, attribute=None, cellSizeInArcMinutes=None):
+    def __init__(self, cloneMapFile, attribute = None, cellSizeInArcMinutes = None):
         		
         # cloneMap
         # - the cloneMap must be at 5 arc min resolution
@@ -119,75 +119,77 @@ class MakingNetCDF():
 if __name__ == "__main__":
     
     # clone, landmask and cell area files
-    landmask05minFile    = "/projects/0/dfguu/data/hydroworld/PCRGLOBWB20/input5min/routing/lddsound_05min.map"
+    landmask05minFile    = "/depfg/sutan101/data/pcrglobwb_input_aqueduct/version_2021-09-16/general/lddsound_05min_version_20210330.map"
     #~ landmask05minFile = "/projects/0/dfguu/data/hydroworld/others/RhineMeuse/RhineMeuse05min.landmask.map"
     cloneMapFileName     = landmask05minFile 
     cellSizeInArcMinutes = 5.0 
-    cellArea05minFile    = "/projects/0/dfguu/data/hydroworld/PCRGLOBWB20/input5min/routing/cellsize05min.correct.map"
+    cellArea05minFile    = "/depfg/sutan101/data/pcrglobwb_input_aqueduct/version_2021-09-16/general/cdo_gridarea_clone_global_05min_correct_lats.nc"
     # set clone
     pcr.setclone(landmask05minFile)
     
-    # output directory
-    outputDirectory = "/scratch-shared/edwinhs/country_water_use_and_demand_for_pcrglobwb2.0_paper/"
+    # irrigation efficiency file
+    irrigation_eff_file  = "/depfg/sutan101/data/pcrglobwb_input_aqueduct/version_2021-09-16/general/efficiency.nc"
+    
+    # class (country) ids
+    uniqueIDsFile = "/eejit/home/sutan101/github/edwinkost/pgb_data_for_capri/iso3_countries/row_number_CNTR_RG_01M_2020_4326.shp.tif.map"
+
+    # output directory of this analusis
+    outputDirectory = "/scratch/depfg/sutan101/pgb_output_for_capri_iso3_country/test2/"
+    outputDirectory = sys.argv[1]
+    
+    # output file code/pattern
+    output_file_code = "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference"
+    output_file_code = sys.argv[2] 
     
     # start year and end year
-    staYear = 1958
-    endYear = 2015
+    staYear = 2000
+    endYear = 2005
+    staYear = int(sys.argv[3])
+    endYear = int(sys.argv[4])
 
     # input files
     #
-    # - output directory of PCR-GLOBWB 2:
-    inputDirectory  = "/scratch-shared/edwin/05min_runs_for_land_subsidence_deltares_march_april_2017/4LCs_accutraveltime_cru-forcing/non-natural/merged_1958_to_2015/global/netcdf/"
-    # - water demand directory (domestic, industrial, livestock; no aggricultural)
-    waterDemandDirectory = "/scratch-shared/edwinhs/05min_runs_for_gmd_paper_30_oct_2017/05min_runs_4LCs_accutraveltime_cru-forcing_1958-2015/non-natural_starting_from_1958/analysis/water_demand/annual_average_m_per_day/" 
+    # - output directory of PCR-GLOBWB run:
+    pgb_output_dir  = "/depfg/sutan101/pcrglobwb_wri_aqueduct_2021/pcrglobwb_aqueduct_2021_monthly_annual_files/version_2021-09-16_merged/gswp3-w5e5/historical-reference/"
     #
     inputFiles = {}
     #
     # - unit of the following is m.year and flux values given are over the entire cell area
     #
-    inputFiles["domesticGrossDemand"   ]      = waterDemandDirectory + "/" + "domesticGrossDemand.nc"
-    inputFiles["industryGrossDemand"   ]      = waterDemandDirectory + "/" + "industryGrossDemand.nc"
-    inputFiles["livestockGrossDemand"  ]      = waterDemandDirectory + "/" + "livestockGrossDemand.nc"
-    #                                                                        
-    inputFiles["domesticNettoDemand"   ]      = waterDemandDirectory + "/" + "domesticNettoDemand.nc"
-    inputFiles["industryNettoDemand"   ]      = waterDemandDirectory + "/" + "industryNettoDemand.nc"
-    inputFiles["livestockNettoDemand"  ]      = waterDemandDirectory + "/" + "livestockNettoDemand.nc"
-    #
-    #~ inputFiles["domestic_water_withdrawal"     ]    = inputDirectory + "/" + "domesticWaterWithdrawal_annuaTot_output"
-    #~ inputFiles["industry_water_withdrawal"     ]    = inputDirectory + "/" + "industryWaterWithdrawal_annuaTot_output"
-    #~ inputFiles["livestock_water_withdrawal"    ]    = inputDirectory + "/" + "livestockWaterWithdrawal_annuaTot_output"
-    #~ #
-    #~ inputFiles["non_irrigation_consumption"    ]    = inputDirectory + "/" + "nonIrrWaterConsumption_annuaTot_output"
-    #~ #
-    #~ inputFiles["precipitation"                 ]    = inputDirectory + "/" + "precipitation_annuaTot_output"
-    #~ inputFiles["total_runoff"                  ]    = inputDirectory + "/" + "totalRunoff_annuaTot_output"
-    #~ inputFiles["total_evaporation"             ]    = inputDirectory + "/" + "totalEvaporation_annuaTot_output"
-    #~ inputFiles["total_groundwater_recharge"    ]    = inputDirectory + "/" + "gwRecharge_annuaTot_output"
-    #~ #
-    #~ inputFiles["total_abstraction"             ]    = inputDirectory + "/" + "totalAbstraction_annuaTot_output"
-    #~ inputFiles["desalination_abstraction"      ]    = inputDirectory + "/" + "desalinationAbstraction_annuaTot_output"
-    #~ inputFiles["surface_water_abstraction"     ]    = inputDirectory + "/" + "surfaceWaterAbstraction_annuaTot_output"
-    #~ inputFiles["total_groundwater_abstraction" ]    = inputDirectory + "/" + "totalGroundwaterAbstraction_annuaTot_output_1958-12-31_to_2015-12-31.nc"
-    #~ inputFiles["fossil_groundwater_abstraction"]    = inputDirectory + "/" + "fossilGroundwaterAbstraction_annuaTot_output"
-    #
-    #~ # - unit of the following is m.year and flux values given are over the entire cell area (not only irrigated areas)
-    #~ inputFiles["irrigation_water_withdrawal"   ]    = inputDirectory + "/" + "irrigationWaterWithdrawal_annuaTot_output"
-    #~ inputFiles["evaporation_from_irrigation"   ]    = inputDirectory + "/" + "evaporation_from_irrigation_annuaTot_output"
-    #~ inputFiles["precipitation_at_irrigation"   ]    = inputDirectory + "/" + "precipitation_at_irrigation_annuaTot_output"
+    # ~ inputFiles['totalRunoff']                  = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalRunoff_global_yearly-total_1960_2019_basetier1.nc"
+    # ~ inputFiles['gwRecharge']                   = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_gwRecharge_global_yearly-total_1960_2019_basetier1.nc"
+    # ~ inputFiles['fossilGroundwaterAbstraction'] = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_fossilGroundwaterAbstraction_global_yearly-total_1960_2019_basetier1.nc"
+    # ~ inputFiles['desalinationAbstraction']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_desalinationAbstraction_global_yearly-total_1960_2019_basetier1.nc"
+    # ~ inputFiles['domesticWaterWithdrawal']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_domesticWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
+    # ~ inputFiles['industryWaterWithdrawal']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_industryWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
+    # ~ inputFiles['livestockWaterWithdrawal']     = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_livestockWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
+    # ~ inputFiles['irrigationWaterWithdrawal']    = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrigationWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
 
-    # TODO: add info about area equipped with irrigation 
-    # TODO: add info about return flow fraction for domestic, industry and livestock  
+    inputFiles['totalRunoff']                  = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalRunoff_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
+    inputFiles['gwRecharge']                   = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_gwRecharge_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
+    inputFiles['fossilGroundwaterAbstraction'] = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_fossilGroundwaterAbstraction_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
+    inputFiles['desalinationAbstraction']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_desalinationAbstraction_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
+    inputFiles['domesticWaterWithdrawal']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_domesticWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
+    inputFiles['industryWaterWithdrawal']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_industryWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
+    inputFiles['livestockWaterWithdrawal']     = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_livestockWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
+    inputFiles['irrigationWaterWithdrawal']    = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrigationWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
 
+
+    # capri also needs irrigation efficiency
+    inputFiles['irrigationEfficiency']         = irrigation_eff_file 
+    
+    
     # output that will be calculated 
     output = {}
     variable_names  = inputFiles.keys()
-    #~ variable_names += ['irrigation_water_consumption']
     for var in variable_names:
         output[var] = {}
-        output[var]['file_name'] = outputDirectory + "/" + str(var) + "_annual_country.nc"
+        # ~ output[var]['file_name'] = outputDirectory + "/" + output_file_code + "_" + str(var) + "_annual_country.nc"
+        output[var]['file_name'] = outputDirectory + "/" + output_file_code + "_" + str(var) + "_annual_country.nc"
         output[var]['unit']      = "km3.year-1"
+        if var == "irrigationEfficiency": output[var]['unit'] = "1" 
         output[var]['pcr_value'] = None
-        
+
     # making output and temporary directories
     if os.path.exists(outputDirectory):
         shutil.rmtree(outputDirectory)
@@ -203,14 +205,14 @@ if __name__ == "__main__":
     
     # attribute for netCDF files 
     attributeDictionary = {}
-    attributeDictionary['title'      ]  = "PCR-GLOBWB 2"
+    attributeDictionary['title'      ]  = "PCR-GLOBWB output files"
     attributeDictionary['institution']  = "Dept. of Physical Geography, Utrecht University"
-    attributeDictionary['source'     ]  = "None"
+    attributeDictionary['source'     ]  = pgb_output_dir
     attributeDictionary['history'    ]  = "None"
     attributeDictionary['references' ]  = "None"
-    attributeDictionary['comment'    ]  = "None"
+    attributeDictionary['comment'    ]  = "The conuntry code is based on the " +  str(uniqueIDsFile) + "."
     # additional attribute defined in PCR-GLOBWB 
-    attributeDictionary['description'] = "prepared by Edwin H. Sutanudjaja"
+    attributeDictionary['description']  = "PCR-GLOBWB output files from the Aqueduct run 2021, prepared by Edwin H. Sutanudjaja."
 
     # initiate the netcd object: 
     tssNetCDF = MakingNetCDF(cloneMapFile = cloneMapFileName, \
@@ -221,11 +223,9 @@ if __name__ == "__main__":
         tssNetCDF.createNetCDF(output[var]['file_name'], var, output[var]['unit'])
 
     # class (country) ids
-    uniqueIDsFile = "/projects/0/dfguu/users/edwin/data/country_shp_from_tianyi/World_Polys_High.map"
     uniqueIDs = pcr.nominal(\
                 vos.readPCRmapClone(uniqueIDsFile, cloneMapFileName, tmp_directory, 
                                     None, False, None, True))
-    uniqueIDs = pcr.readmap(uniqueIDsFile)
     uniqueIDs = pcr.ifthen(pcr.scalar(uniqueIDs) >= 0.0, uniqueIDs)
     
     # landmask                               
@@ -268,68 +268,59 @@ if __name__ == "__main__":
         index = index + 1
         timeStamp = datetime.datetime(int(iYear), int(12), int(31), int(0))
         fulldate = '%4i-%02i-%02i'  %(int(iYear), int(12), int(31))
-        print fulldate
+        print(fulldate)
 
-        # reading pcraster files:
+        # reading pcraster or netcdf files:
         for var in inputFiles.keys():        
             
-            # netcdf input file name:
-            inputFile = inputFiles[var]
-            if var!= "total_groundwater_abstraction":
-                inputFile = inputFile + "_" + fulldate + "_to_" + fulldate + ".nc"
-            if var in ["domesticGrossDemand",  \
-                       "industryGrossDemand",  \
-                       "livestockGrossDemand", \
-                       "domesticNettoDemand",  \
-                       "industryNettoDemand",  \
-                       "livestockNettoDemand"]:
-               inputFile = inputFiles[var]
-            print inputFile   
+            print(inputFiles[var])   
 
-            # fixing the year for water demand years (only between 1958 and 2010)
-            fulldate_for_reading_netcdf = fulldate
-            if iYear < 1960: fulldate_for_reading_netcdf = '%4i-%02i-%02i'  %(int(1960), int(12), int(31))
-            if iYear > 2010: fulldate_for_reading_netcdf = '%4i-%02i-%02i'  %(int(2010), int(12), int(31))
+            if var == "irrigationEfficiency":
             
-            # reading PCR-GLOBWB values
-            output[var]['pcr_value'] = vos.netcdf2PCRobjClone(ncFile = inputFile,\
-                                                              varName = "Automatic",\
-                                                              dateInput = fulldate_for_reading_netcdf,
-                                                              useDoy = None,
-                                                              cloneMapFileName  = cloneMapFileName,
-                                                              LatitudeLongitude = True,
-                                                              specificFillValue = None)
-            # - water demand files/values are still in m.day-1 ; we have to convert them to m.year-1
-            if var in ["domesticGrossDemand",  \
-                       "industryGrossDemand",  \
-                       "livestockGrossDemand", \
-                       "domesticNettoDemand",  \
-                       "industryNettoDemand",  \
-                       "livestockNettoDemand"]:
-                number_of_days_in_the_year = 365
-                if calendar.isleap(iYear): number_of_days_in_the_year = 366 
-                output[var]['pcr_value'] = output[var]['pcr_value'] * number_of_days_in_the_year
-                                                              
+                if iYear == staYear:
+                
+                    irrigationEfficiency = vos.readPCRmapClone(inputFiles[var],
+                                                               cloneMapFileName, tmp_directory)
 
-        #~ # calculating irrigation water consumption
-        #~ output['irrigation_water_consumption']['pcr_value'] = output['evaporation_from_irrigation']['pcr_value'] * \
-                                                              #~ vos.getValDivZero(output['irrigation_water_withdrawal']['pcr_value'], \
-                                                                                #~ output['irrigation_water_withdrawal']['pcr_value'] +\
-                                                                                #~ output['precipitation_at_irrigation']['pcr_value'])
+                    irrigationEfficiency = pcr.cover(irrigationEfficiency, 1.0)
+                    irrigationEfficiency = pcr.max(0.1, irrigationEfficiency)
+
+                output[var]['pcr_value'] = irrigationEfficiency
+
+
+            if var != "irrigationEfficiency":
+
+                # reading PCR-GLOBWB values from netcdf files with time component
+
+                fulldate_for_reading_netcdf = fulldate
+                output[var]['pcr_value'] = vos.netcdf2PCRobjClone(ncFile = inputFiles[var],\
+                                                                  varName = "automatic",\
+                                                                  dateInput = fulldate_for_reading_netcdf,
+                                                                  useDoy = None,
+                                                                  cloneMapFileName  = cloneMapFileName,
+                                                                  LatitudeLongitude = True,
+                                                                  specificFillValue = None)
         
         # upscaling to the class (country) units and writing to netcdf files and a table
         for var in output.keys():
             
-            print var
+            print(var)
             
-            # covering the map with zero
-            pcrValue = pcr.cover(output[var]['pcr_value'], 0.0)
-            
-            # convert values from m to m3
-            pcrValue =  pcrValue * cellArea
+            if var == "irrigationEfficiency":
 
-            # upscaling to the class (country) units and converting the units to km3/year
-            pcrValue = pcr.areatotal(pcrValue, uniqueIDs) / (1000. * 1000. * 1000.)
+                # upscaling to the class (country) unit - using areaaveraga
+                pcrValue = pcr.areaaverage(output[var]['pcr_value'], uniqueIDs)
+
+            if var != "irrigationEfficiency":
+
+                # covering the map with zero
+                pcrValue = pcr.cover(output[var]['pcr_value'], 0.0)
+                
+                # convert values from m to m3
+                pcrValue =  pcrValue * cellArea
+			    
+                # upscaling to the class (country) units and converting the units to km3/year - using areatotal
+                pcrValue = pcr.areatotal(pcrValue, uniqueIDs) / (1000. * 1000. * 1000.)
             
             # write values to a netcdf file
             ncFileName = output[var]['file_name']
@@ -346,19 +337,19 @@ if __name__ == "__main__":
         # - header for the table
         header = "x y class_id"
         # - txt file that contains the table
-        txt_file = open(table_directory + "/" + "summary_" + fulldate + ".txt", "w")
+        txt_file = open(table_directory + "/" + output_file_code + "_summary_" + str(iYear) + ".txt", "w")
         for var in output.keys():
             header += " " + str(var)
-            header += "_km3"
+            if var != "irrigationEfficiency": header += "_km3"
             cmd    += " " + str(tmp_directory) + "/" + str(var) + ".tmp"
-        cmd += " " + str(tmp_directory) + "/" + "summary_" + fulldate + ".txt.tmp"
-        print cmd
+        cmd += " " + str(tmp_directory) + "/" + output_file_code + "_summary_" + str(iYear) + ".txt.tmp"
+        print(cmd)
         os.system(cmd)
         # - add header to txt file
         header += "\n" 
         txt_file.write(header)
         # - add map2col output to the txt_file
-        map2col_file = open(tmp_directory+"/" + "summary_" + fulldate + ".txt.tmp", "r")
+        map2col_file = open(tmp_directory+"/" + output_file_code + "_summary_" + str(iYear) + ".txt.tmp", "r")
         txt_file.write(map2col_file.read())
         # - close all open txt files
         txt_file.close()
@@ -366,5 +357,7 @@ if __name__ == "__main__":
         
         # remove all temporary files
         cmd = 'rm -r '+ tmp_directory + "/*"
+        print(cmd)
         os.system(cmd)
         
+
