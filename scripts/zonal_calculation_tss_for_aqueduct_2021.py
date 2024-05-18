@@ -141,11 +141,20 @@ if __name__ == "__main__":
     output_file_code = "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference"
     output_file_code = sys.argv[2] 
     
+    # codes for gcm, 'scenario', etc
+    gcmCode      = sys.argv[2]
+    scenarioCode = sys.argv[3]
+    output_file_code = "pcrglobwb_cmip6-isimip3-%s_image-aqueduct_%s" % (gcmCode, scenarioCode) 
+
+    # ~ # output file code/pattern
+    # ~ output_file_code = "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference"
+    # ~ output_file_code = sys.argv[2] 
+
     # start year and end year
     staYear = 2000
     endYear = 2005
-    staYear = int(sys.argv[3])
-    endYear = int(sys.argv[4])
+    staYear = int(sys.argv[4])
+    endYear = int(sys.argv[5])
 
     # input files
     #
@@ -165,14 +174,14 @@ if __name__ == "__main__":
     # ~ inputFiles['livestockWaterWithdrawal']     = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_livestockWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
     # ~ inputFiles['irrigationWaterWithdrawal']    = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrigationWaterWithdrawal_global_yearly-total_1960_2019_basetier1.nc"
 
-    inputFiles['totalRunoff']                  = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_totalRunoff_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
-    inputFiles['gwRecharge']                   = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_gwRecharge_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
-    inputFiles['fossilGroundwaterAbstraction'] = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_fossilGroundwaterAbstraction_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
-    inputFiles['desalinationAbstraction']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_desalinationAbstraction_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
-    inputFiles['domesticWaterWithdrawal']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_domesticWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
-    inputFiles['industryWaterWithdrawal']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_industryWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
-    inputFiles['livestockWaterWithdrawal']     = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_livestockWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
-    inputFiles['irrigationWaterWithdrawal']    = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-gswp3-w5e5_image-aqueduct_historical-reference_irrigationWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (str(staYear), str(endYear))
+    inputFiles['totalRunoff']                  = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-%s_image-aqueduct_%s_totalRunoff_global_yearly-total_%s_%s_basetier1.nc" % (gcmCode, scenarioCode, str(staYear), str(endYear))
+    inputFiles['gwRecharge']                   = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-%s_image-aqueduct_%s_gwRecharge_global_yearly-total_%s_%s_basetier1.nc" % (gcmCode, scenarioCode, str(staYear), str(endYear))
+    inputFiles['fossilGroundwaterAbstraction'] = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-%s_image-aqueduct_%s_fossilGroundwaterAbstraction_global_yearly-total_%s_%s_basetier1.nc" % (gcmCode, scenarioCode, str(staYear), str(endYear))
+    inputFiles['desalinationAbstraction']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-%s_image-aqueduct_%s_desalinationAbstraction_global_yearly-total_%s_%s_basetier1.nc" % (gcmCode, scenarioCode, str(staYear), str(endYear))
+    inputFiles['domesticWaterWithdrawal']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-%s_image-aqueduct_%s_domesticWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (gcmCode, scenarioCode, str(staYear), str(endYear))
+    inputFiles['industryWaterWithdrawal']      = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-%s_image-aqueduct_%s_industryWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (gcmCode, scenarioCode, str(staYear), str(endYear))
+    inputFiles['livestockWaterWithdrawal']     = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-%s_image-aqueduct_%s_livestockWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (gcmCode, scenarioCode, str(staYear), str(endYear))
+    inputFiles['irrigationWaterWithdrawal']    = pgb_output_dir + "/" + "pcrglobwb_cmip6-isimip3-%s_image-aqueduct_%s_irrigationWaterWithdrawal_global_yearly-total_%s_%s_basetier1.nc" % (gcmCode, scenarioCode, str(staYear), str(endYear))
 
 
     # capri also needs irrigation efficiency
